@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Annotated
 
 import typer
 
@@ -11,12 +12,27 @@ from .renderers import render_html, render_json, render_mermaid
 from .rules import run_rules
 
 app = typer.Typer(help="Turn GitHub Actions YAML into a visual operational map.")
-
+DEFAULT_OUTPUT_DIR = Path("workflow-map")
 
 @app.command()
+
 def main(
-    workflow: Path = typer.Argument(..., exists=True, readable=True, help="Local .yml or .yaml workflow file"),
-    output: Path = typer.Option(Path("workflow-map"), "--output", "-o", help="Output directory"),
+    workflow: Annotated[
+        Path,
+        typer.Argument(
+            exists=True,
+            readable=True,
+            help="Local .yml or .yaml workflow file",
+        ),
+    ],
+    output: Annotated[
+        Path,
+        typer.Option(
+            "--output",
+            "-o",
+            help="Output directory",
+        ),
+    ] = DEFAULT_OUTPUT_DIR,
 ) -> None:
     try:
         model = parse_workflow(workflow)
