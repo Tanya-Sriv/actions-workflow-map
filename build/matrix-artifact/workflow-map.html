@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Matrix Artifact Demo</title>
+<style>body{font-family:system-ui,sans-serif;max-width:1200px;margin:auto;padding:2rem;color:#1f2937}code,pre{background:#f3f4f6}.card{border:1px solid #d1d5db;border-radius:10px;padding:1rem;margin:1rem 0}.warning{border-left:5px solid #b45309}.info{border-left:5px solid #2563eb}.muted{color:#6b7280}.mermaid{overflow:auto}</style>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'; mermaid.initialize({startOnLoad:true,securityLevel:'strict'});</script>
+</head><body>
+<h1>Matrix Artifact Demo</h1><p class="muted">Declared configuration map for examples\matrix-artifact.yml</p>
+<div class="card"><div class="mermaid">flowchart TD
+  trigger_pull_request([&quot;trigger: pull_request&quot;])
+  trigger_pull_request --&gt; build
+  trigger_workflow_dispatch([&quot;trigger: workflow_dispatch&quot;])
+  trigger_workflow_dispatch --&gt; build
+  build[&quot;Build&lt;br/&gt;runner: ${{ matrix.os }}&lt;br/&gt;matrix: os=[&#x27;ubuntu-latest&#x27;, &#x27;windows-latest&#x27;], python=[&#x27;3.11&#x27;, &#x27;3.12&#x27;]&quot;]
+  test[&quot;test&lt;br/&gt;runner: ubuntu-latest&quot;]
+  deploy[&quot;deploy&lt;br/&gt;runner: ubuntu-latest&lt;br/&gt;if: github.ref == &#x27;refs/heads/main&#x27;&quot;]
+  build --&gt;|needs| test
+  test --&gt;|needs| deploy
+  environment_staging([&quot;environment: staging&quot;])
+  deploy --&gt;|deploys-to| environment_staging
+  artifact_package{{&quot;artifact: package&quot;}}
+  build --&gt;|produces| artifact_package
+  artifact_package --&gt;|consumes| test
+</div></div>
+<h2>Summary</h2><div class="card"><p><strong>Jobs:</strong> 3</p><p><strong>Artifacts:</strong> 1</p><p><strong>Findings:</strong> 3</p></div>
+<h2>Findings</h2>
+<div class="card warning"><strong>WF501 — Mutable external action reference</strong><p>jobs.build uses actions/checkout@v4</p><p><strong>Suggested review:</strong> Pin third-party actions to an immutable commit SHA.</p><p class="muted">Limitation: Local reusable workflows and docker:// references are excluded.</p></div><div class="card warning"><strong>WF501 — Mutable external action reference</strong><p>jobs.build uses actions/upload-artifact@v4</p><p><strong>Suggested review:</strong> Pin third-party actions to an immutable commit SHA.</p><p class="muted">Limitation: Local reusable workflows and docker:// references are excluded.</p></div><div class="card warning"><strong>WF501 — Mutable external action reference</strong><p>jobs.test uses actions/download-artifact@v4</p><p><strong>Suggested review:</strong> Pin third-party actions to an immutable commit SHA.</p><p class="muted">Limitation: Local reusable workflows and docker:// references are excluded.</p></div>
+<h2>Boundary</h2><p>This report maps declared YAML configuration. It does not simulate all runtime behavior or replace GitHub validation, actionlint, or security scanners.</p>
+</body></html>

@@ -1,0 +1,2 @@
+[console_scripts]
+actions-workflow-map = actions_workflow_map.cli:app
