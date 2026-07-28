@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: actions-workflow-map
-Version: 0.1.0
+Version: 0.2.0
 Summary: Visualize GitHub Actions triggers, jobs, dependencies, matrices, permissions, artifacts, and workflow risks.
 Author: Tanya Srivastava
 License: MIT
@@ -57,12 +57,6 @@ python -m pip install -e .[dev]
 ruff check .
 pytest -q
 ```
-
-## Example
-
-```bash
-actions-workflow-map examples/matrix-artifact.yml \
-  --output build/matrix-artifact
 
 ## Phase 1 limitations
 

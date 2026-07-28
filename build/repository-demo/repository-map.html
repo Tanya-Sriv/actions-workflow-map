@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Actions Workflow Map — Repository Analysis</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:1400px;margin:auto;padding:2rem;color:#1f2937}
+.card{border:1px solid #d1d5db;border-radius:10px;padding:1rem;margin:1rem 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem}.metric{background:#f8fafc}
+.warning{border-left:5px solid #b45309}.error{border-left:5px solid #b91c1c}.info{border-left:5px solid #2563eb}
+.muted{color:#6b7280}.mermaid{overflow:auto}table{border-collapse:collapse;width:100%}th,td{border:1px solid #d1d5db;padding:.6rem;text-align:left}
+code{background:#f3f4f6;padding:.1rem .3rem}
+</style>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'; mermaid.initialize({startOnLoad:true,securityLevel:'strict'});</script>
+</head><body>
+<h1>Actions Workflow Map — Repository Analysis</h1>
+<p class="muted">Declared configuration map for .</p>
+<div class="grid">
+<div class="card metric"><strong>4</strong><br>Workflows</div><div class="card metric"><strong>6</strong><br>Jobs</div><div class="card metric"><strong>1</strong><br>Dependencies</div><div class="card metric"><strong>1</strong><br>Reusable calls</div><div class="card metric"><strong>1</strong><br>Matrix jobs</div><div class="card metric"><strong>4</strong><br>Estimated matrix executions</div><div class="card metric"><strong>1</strong><br>Concurrency groups</div><div class="card metric"><strong>3</strong><br>Findings</div>
+</div>
+<div class="card"><div class="mermaid">flowchart TD
+  repository[&quot;repository&quot;]
+  subgraph node_subgraph___github_workflows_ci_yml[&quot;.github/workflows/ci.yml&quot;]
+    node_workflow___github_workflows_ci_yml[&quot;CI&quot;]
+    node_job___github_workflows_ci_yml__build[&quot;build&lt;br/&gt;matrix≈4&quot;]
+    node_job___github_workflows_ci_yml__test[&quot;test&quot;]
+  end
+  subgraph node_subgraph___github_workflows_deploy_yml[&quot;.github/workflows/deploy.yml&quot;]
+    node_workflow___github_workflows_deploy_yml[&quot;Deploy&quot;]
+    node_job___github_workflows_deploy_yml__deploy[&quot;deploy&lt;br/&gt;env=staging&quot;]
+  subgraph node_subgraph___github_workflows_release_yml[&quot;.github/workflows/release.yml&quot;]
+    node_workflow___github_workflows_release_yml[&quot;Release&quot;]
+    node_job___github_workflows_release_yml__call_build[&quot;call-build&quot;]
+    node_job___github_workflows_release_yml__publish[&quot;publish&quot;]
+  subgraph node_subgraph___github_workflows_reusable_build_yml[&quot;.github/workflows/reusable-build.yml&quot;]
+    node_workflow___github_workflows_reusable_build_yml[&quot;Reusable Build&quot;]
+    node_job___github_workflows_reusable_build_yml__build[&quot;build&quot;]
+  node_job___github_workflows_ci_yml__build --&gt;|needs| node_job___github_workflows_ci_yml__test
+  node_environment__staging([&quot;environment: staging&quot;])
+  node_job___github_workflows_deploy_yml__deploy --&gt;|deploys-to| node_environment__staging
+  node_job___github_workflows_release_yml__call_build --&gt;|calls| node_workflow___github_workflows_reusable_build_yml
+  node_repository --&gt;|contains| node_workflow___github_workflows_ci_yml
+  node_repository --&gt;|contains| node_workflow___github_workflows_deploy_yml
+  node_repository --&gt;|contains| node_workflow___github_workflows_release_yml
+  node_repository --&gt;|contains| node_workflow___github_workflows_reusable_build_yml
+  node_workflow___github_workflows_ci_yml --&gt;|contains| node_job___github_workflows_ci_yml__build
+  node_workflow___github_workflows_ci_yml --&gt;|contains| node_job___github_workflows_ci_yml__test
+  node_concurrency__deployment{{&quot;concurrency: deployment&quot;}}
+  node_workflow___github_workflows_deploy_yml --&gt;|uses-concurrency| node_concurrency__deployment
+  node_workflow___github_workflows_deploy_yml --&gt;|contains| node_job___github_workflows_deploy_yml__deploy
+  node_workflow___github_workflows_release_yml --&gt;|uses-concurrency| node_concurrency__deployment
+  node_workflow___github_workflows_release_yml --&gt;|contains| node_job___github_workflows_release_yml__call_build
+  node_workflow___github_workflows_release_yml --&gt;|contains| node_job___github_workflows_release_yml__publish
+  node_workflow___github_workflows_reusable_build_yml --&gt;|contains| node_job___github_workflows_reusable_build_yml__build
+</div></div>
+<h2>Workflows</h2>
+<table><thead><tr><th>Workflow</th><th>Jobs</th><th>Findings</th><th>Report</th></tr></thead><tbody>
+<tr><td><code>.github/workflows/ci.yml</code></td><td>2</td><td>3</td><td><a href="workflows/ci/workflow-map.html">Open</a></td></tr><tr><td><code>.github/workflows/deploy.yml</code></td><td>1</td><td>0</td><td><a href="workflows/deploy/workflow-map.html">Open</a></td></tr><tr><td><code>.github/workflows/release.yml</code></td><td>2</td><td>1</td><td><a href="workflows/release/workflow-map.html">Open</a></td></tr><tr><td><code>.github/workflows/reusable-build.yml</code></td><td>1</td><td>0</td><td><a href="workflows/reusable-build/workflow-map.html">Open</a></td></tr>
+</tbody></table>
+<h2>Reusable workflow references</h2>
+<table><thead><tr><th>Caller</th><th>Reference</th><th>Status</th></tr></thead><tbody>
+<tr><td>.github/workflows/release.yml::jobs.call-build</td><td><code>./.github/workflows/reusable-build.yml</code></td><td>resolved: .github/workflows/reusable-build.yml</td></tr>
+</tbody></table>
+<h2>Findings</h2>
+<div class="card warning"><strong>WF701 — Concurrency group shared across workflows</strong><p>Concurrency group 'deployment' is declared by: .github/workflows/deploy.yml, .github/workflows/release.yml</p><p><strong>Suggested review:</strong> Confirm that cross-workflow serialization is intentional.</p><p class="muted">Limitation: Only exact static group strings are compared.</p></div><div class="card warning"><strong>WF702 — Shared concurrency group enables cancellation</strong><p>Concurrency group 'deployment' is declared by: .github/workflows/deploy.yml, .github/workflows/release.yml</p><p><strong>Suggested review:</strong> Review whether one workflow may cancel another unexpectedly.</p><p class="muted">Limitation: This is a declared-configuration risk, not proof that cancellation occurs.</p></div><div class="card warning"><strong>WF901 — Job permissions broaden workflow permissions</strong><p>.github/workflows/release.yml::jobs.call-build changes contents from read to write.</p><p><strong>Suggested review:</strong> Confirm the broader job-level permission is required.</p></div>
+<h2>Boundary</h2><p>This report maps declared YAML configuration. It does not simulate GitHub Actions runtime behavior, evaluate every expression, or download remote reusable workflows.</p>
+</body></html>
