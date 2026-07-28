@@ -1,0 +1,13 @@
+name: Deploy
+on:
+  workflow_dispatch:
+concurrency:
+  group: deployment
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: staging
+    steps:
+      - run: echo deploy

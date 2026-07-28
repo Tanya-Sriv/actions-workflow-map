@@ -11,7 +11,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with: {python-version: "3.11"}
-      - run: python -m pip install -e .[dev]
+        with:
+          python-version: "3.11"
+      - run: python -m pip install -e ".[dev]"
       - run: ruff check .
       - run: pytest -q
+      - name: Run single-workflow smoke test
+        run: actions-workflow-map examples/matrix-artifact.yml --output build/single
+      - name: Run repository-mode smoke test
+        run: actions-workflow-map examples/repository-demo --output build/repository
+      - name: Verify repository outputs
+        run: |
+          test -f build/repository/repository-map.html
+          test -f build/repository/repository-map.mmd
+          test -f build/repository/repository-report.json

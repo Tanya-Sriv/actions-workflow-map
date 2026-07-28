@@ -1,24 +1,27 @@
 # Changelog
 
-## [0.1.0] - 2026-07-28
+## [0.2.0] - 2026-07-28
 
 ### Added
 
-- Local GitHub Actions workflow parsing
-- Mermaid workflow visualization
-- Self-contained HTML report
-- Machine-readable JSON report
-- Console summary
-- Job dependency and matrix extraction
-- Permission and environment extraction
-- Artifact producer and consumer mapping
-- Deterministic findings WF101, WF201, WF301, WF302, WF401, and WF501
-- Example workflows
-- Automated linting and tests through GitHub Actions
+- Repository-wide workflow discovery under `.github/workflows`
+- Repository HTML, Mermaid, and JSON reports
+- Individual reports for every parsed workflow in repository mode
+- Local reusable workflow resolution and `workflow_call` validation
+- Workflow- and job-level concurrency extraction
+- Shared static concurrency-group findings
+- Workflow permission inheritance and job permission-expansion findings
+- Matrix `include`, `exclude`, and estimated-expansion analysis
+- Graceful continuation after malformed workflow files
+- Repository demonstration fixture and CI smoke test
 
-## 0.1.0
+### Changed
 
-- Initial local single-workflow parser.
-- Mermaid, self-contained report shell, JSON, and console outputs.
-- Artifact-flow mapping and six deterministic rule categories.
-- Examples, tests, documentation, and CI.
+- CLI accepts either a workflow YAML file or repository directory
+- Package version updated to `0.2.0`
+
+## [0.1.0] - 2026-07-27
+
+### Added
+
+- Initial single-workflow Mermaid, HTML, JSON, console, artifact-flow, and finding support

@@ -1,0 +1,149 @@
+{
+  "artifacts": [
+    {
+      "consumers": [
+        "test"
+      ],
+      "name": "package",
+      "producers": [
+        "build"
+      ],
+      "unresolved": false
+    }
+  ],
+  "concurrency": null,
+  "concurrency_details": null,
+  "findings": [
+    {
+      "affected_node": "build",
+      "evidence": "jobs.build uses actions/checkout@v4",
+      "limitation": "Local reusable workflows and docker:// references are excluded.",
+      "remediation": "Pin third-party actions to an immutable commit SHA.",
+      "rule_id": "WF501",
+      "severity": "warning",
+      "title": "Mutable external action reference"
+    },
+    {
+      "affected_node": "build",
+      "evidence": "jobs.build uses actions/upload-artifact@v4",
+      "limitation": "Local reusable workflows and docker:// references are excluded.",
+      "remediation": "Pin third-party actions to an immutable commit SHA.",
+      "rule_id": "WF501",
+      "severity": "warning",
+      "title": "Mutable external action reference"
+    },
+    {
+      "affected_node": "test",
+      "evidence": "jobs.test uses actions/download-artifact@v4",
+      "limitation": "Local reusable workflows and docker:// references are excluded.",
+      "remediation": "Pin third-party actions to an immutable commit SHA.",
+      "rule_id": "WF501",
+      "severity": "warning",
+      "title": "Mutable external action reference"
+    }
+  ],
+  "jobs": {
+    "build": {
+      "concurrency": null,
+      "concurrency_details": null,
+      "condition": null,
+      "effective_permissions": {
+        "contents": "read"
+      },
+      "environment": null,
+      "id": "build",
+      "matrix": {
+        "os": [
+          "ubuntu-latest",
+          "windows-latest"
+        ],
+        "python": [
+          "3.11",
+          "3.12"
+        ]
+      },
+      "matrix_details": {
+        "dimensions": {
+          "os": [
+            "ubuntu-latest",
+            "windows-latest"
+          ],
+          "python": [
+            "3.11",
+            "3.12"
+          ]
+        },
+        "estimated_expansion": 4,
+        "excludes": [],
+        "has_unresolved_expressions": false,
+        "includes": []
+      },
+      "name": null,
+      "needs": [],
+      "permission_source": "workflow",
+      "permissions": null,
+      "runs_on": "ubuntu-latest",
+      "steps": [
+        {
+          "condition": null,
+          "name": null,
+          "run": null,
+          "uses": "actions/checkout@v4",
+          "with_inputs": {}
+        },
+        {
+          "condition": null,
+          "name": null,
+          "run": null,
+          "uses": "actions/upload-artifact@v4",
+          "with_inputs": {
+            "name": "package"
+          }
+        }
+      ],
+      "timeout_minutes": 15,
+      "uses": null
+    },
+    "test": {
+      "concurrency": null,
+      "concurrency_details": null,
+      "condition": null,
+      "effective_permissions": {
+        "contents": "read"
+      },
+      "environment": null,
+      "id": "test",
+      "matrix": {},
+      "matrix_details": null,
+      "name": null,
+      "needs": [
+        "build"
+      ],
+      "permission_source": "workflow",
+      "permissions": null,
+      "runs_on": "ubuntu-latest",
+      "steps": [
+        {
+          "condition": null,
+          "name": null,
+          "run": null,
+          "uses": "actions/download-artifact@v4",
+          "with_inputs": {
+            "name": "package"
+          }
+        }
+      ],
+      "timeout_minutes": 10,
+      "uses": null
+    }
+  },
+  "name": "CI",
+  "permissions": {
+    "contents": "read"
+  },
+  "source_path": "C:\\Users\\tanya\\Downloads\\Project NIW\\Actions-workflow-maps\\actions-workflow-map\\examples\\repository-demo\\.github\\workflows\\ci.yml",
+  "triggers": {
+    "pull_request": null
+  },
+  "unsupported": []
+}

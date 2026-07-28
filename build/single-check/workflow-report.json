@@ -1,0 +1,158 @@
+{
+  "artifacts": [
+    {
+      "consumers": [
+        "test"
+      ],
+      "name": "package",
+      "producers": [
+        "build"
+      ],
+      "unresolved": false
+    }
+  ],
+  "concurrency": null,
+  "findings": [
+    {
+      "evidence": "jobs.build uses actions/checkout@v4",
+      "job_id": "build",
+      "remediation": "Pin third-party actions to an immutable commit SHA.",
+      "rule_id": "WF501",
+      "severity": "warning",
+      "title": "Mutable external action reference"
+    },
+    {
+      "evidence": "jobs.build uses actions/upload-artifact@v4",
+      "job_id": "build",
+      "remediation": "Pin third-party actions to an immutable commit SHA.",
+      "rule_id": "WF501",
+      "severity": "warning",
+      "title": "Mutable external action reference"
+    },
+    {
+      "evidence": "jobs.test uses actions/download-artifact@v4",
+      "job_id": "test",
+      "remediation": "Pin third-party actions to an immutable commit SHA.",
+      "rule_id": "WF501",
+      "severity": "warning",
+      "title": "Mutable external action reference"
+    }
+  ],
+  "jobs": {
+    "build": {
+      "concurrency": null,
+      "condition": null,
+      "environment": null,
+      "id": "build",
+      "matrix": {
+        "os": [
+          "ubuntu-latest",
+          "windows-latest"
+        ],
+        "python": [
+          "3.11",
+          "3.12"
+        ]
+      },
+      "name": "Build",
+      "needs": [],
+      "permissions": null,
+      "runs_on": "${{ matrix.os }}",
+      "steps": [
+        {
+          "condition": null,
+          "name": null,
+          "run": null,
+          "uses": "actions/checkout@v4",
+          "with_inputs": {}
+        },
+        {
+          "condition": null,
+          "name": null,
+          "run": "python -m build",
+          "uses": null,
+          "with_inputs": {}
+        },
+        {
+          "condition": null,
+          "name": null,
+          "run": null,
+          "uses": "actions/upload-artifact@v4",
+          "with_inputs": {
+            "name": "package",
+            "path": "dist/"
+          }
+        }
+      ],
+      "timeout_minutes": 20,
+      "uses": null
+    },
+    "deploy": {
+      "concurrency": null,
+      "condition": "github.ref == 'refs/heads/main'",
+      "environment": "staging",
+      "id": "deploy",
+      "matrix": {},
+      "name": null,
+      "needs": [
+        "test"
+      ],
+      "permissions": null,
+      "runs_on": "ubuntu-latest",
+      "steps": [
+        {
+          "condition": null,
+          "name": null,
+          "run": "echo deploy",
+          "uses": null,
+          "with_inputs": {}
+        }
+      ],
+      "timeout_minutes": 10,
+      "uses": null
+    },
+    "test": {
+      "concurrency": null,
+      "condition": null,
+      "environment": null,
+      "id": "test",
+      "matrix": {},
+      "name": null,
+      "needs": [
+        "build"
+      ],
+      "permissions": null,
+      "runs_on": "ubuntu-latest",
+      "steps": [
+        {
+          "condition": null,
+          "name": null,
+          "run": null,
+          "uses": "actions/download-artifact@v4",
+          "with_inputs": {
+            "name": "package"
+          }
+        },
+        {
+          "condition": null,
+          "name": null,
+          "run": "pytest",
+          "uses": null,
+          "with_inputs": {}
+        }
+      ],
+      "timeout_minutes": 15,
+      "uses": null
+    }
+  },
+  "name": "Matrix Artifact Demo",
+  "permissions": {
+    "contents": "read"
+  },
+  "source_path": "examples\\matrix-artifact.yml",
+  "triggers": {
+    "pull_request": null,
+    "workflow_dispatch": null
+  },
+  "unsupported": []
+}

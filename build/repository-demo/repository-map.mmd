@@ -1,0 +1,34 @@
+flowchart TD
+  repository["repository"]
+  subgraph node_subgraph___github_workflows_ci_yml[".github/workflows/ci.yml"]
+    node_workflow___github_workflows_ci_yml["CI"]
+    node_job___github_workflows_ci_yml__build["build<br/>matrix≈4"]
+    node_job___github_workflows_ci_yml__test["test"]
+  end
+  subgraph node_subgraph___github_workflows_deploy_yml[".github/workflows/deploy.yml"]
+    node_workflow___github_workflows_deploy_yml["Deploy"]
+    node_job___github_workflows_deploy_yml__deploy["deploy<br/>env=staging"]
+  subgraph node_subgraph___github_workflows_release_yml[".github/workflows/release.yml"]
+    node_workflow___github_workflows_release_yml["Release"]
+    node_job___github_workflows_release_yml__call_build["call-build"]
+    node_job___github_workflows_release_yml__publish["publish"]
+  subgraph node_subgraph___github_workflows_reusable_build_yml[".github/workflows/reusable-build.yml"]
+    node_workflow___github_workflows_reusable_build_yml["Reusable Build"]
+    node_job___github_workflows_reusable_build_yml__build["build"]
+  node_job___github_workflows_ci_yml__build -->|needs| node_job___github_workflows_ci_yml__test
+  node_environment__staging(["environment: staging"])
+  node_job___github_workflows_deploy_yml__deploy -->|deploys-to| node_environment__staging
+  node_job___github_workflows_release_yml__call_build -->|calls| node_workflow___github_workflows_reusable_build_yml
+  node_repository -->|contains| node_workflow___github_workflows_ci_yml
+  node_repository -->|contains| node_workflow___github_workflows_deploy_yml
+  node_repository -->|contains| node_workflow___github_workflows_release_yml
+  node_repository -->|contains| node_workflow___github_workflows_reusable_build_yml
+  node_workflow___github_workflows_ci_yml -->|contains| node_job___github_workflows_ci_yml__build
+  node_workflow___github_workflows_ci_yml -->|contains| node_job___github_workflows_ci_yml__test
+  node_concurrency__deployment{{"concurrency: deployment"}}
+  node_workflow___github_workflows_deploy_yml -->|uses-concurrency| node_concurrency__deployment
+  node_workflow___github_workflows_deploy_yml -->|contains| node_job___github_workflows_deploy_yml__deploy
+  node_workflow___github_workflows_release_yml -->|uses-concurrency| node_concurrency__deployment
+  node_workflow___github_workflows_release_yml -->|contains| node_job___github_workflows_release_yml__call_build
+  node_workflow___github_workflows_release_yml -->|contains| node_job___github_workflows_release_yml__publish
+  node_workflow___github_workflows_reusable_build_yml -->|contains| node_job___github_workflows_reusable_build_yml__build
