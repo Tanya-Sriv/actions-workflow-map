@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from pathlib import Path
 
 from .artifact_flow import extract_artifacts
