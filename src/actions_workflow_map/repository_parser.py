@@ -4,6 +4,7 @@ from pathlib import Path
 
 from .artifact_flow import extract_artifacts
 from .discovery import discover_workflow_files
+from .errors import WorkflowMapError
 from .models import Finding, RepositoryModel
 from .parser import parse_workflow
 from .repository_rules import run_repository_rules
@@ -20,7 +21,7 @@ def parse_repository(repository_root: Path) -> RepositoryModel:
             workflow = parse_workflow(workflow_path)
             extract_artifacts(workflow)
             run_rules(workflow)
-        except Exception as exc:
+        except WorkflowMapError as exc:
             repository.findings.append(
                 Finding(
                     rule_id="WF001",
