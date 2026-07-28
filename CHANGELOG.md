@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.1] - 2026-07-28
+
+### Changed
+
+- Added Zenodo deposit and software citation metadata.
+- Added repository and release identifiers.
+- No functional changes.
+
 ## [0.2.0] - 2026-07-28
 
 ### Added
