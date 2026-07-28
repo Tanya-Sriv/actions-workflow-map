@@ -42,7 +42,16 @@ def run_rules(model: WorkflowModel) -> list[Finding]:
         for ref in references:
             assert ref is not None
             if _mutable_ref(ref):
-                findings.append(Finding("WF501", "warning", "Mutable external action reference", f"jobs.{job.id} uses {ref}", job.id, "Pin third-party actions to an immutable commit SHA.", "Local reusable workflows and docker:// references are excluded."))
+                findings.append(Finding(
+                    rule_id="WF501",
+                    severity="warning",
+                    title="Mutable external action reference",
+                    evidence=f"jobs.{job.id} uses {ref}",
+                    job_id=job.id,
+                    remediation=(
+                        "Pin third-party actions to an immutable commit SHA."
+                    ),
+                ))
 
     for artifact in model.artifacts:
         if artifact.unresolved:
@@ -56,7 +65,23 @@ def run_rules(model: WorkflowModel) -> list[Finding]:
                 declared = set(model.jobs[consumer].needs)
                 producer_set = set(artifact.producers)
                 if declared.isdisjoint(producer_set):
-                    findings.append(Finding("WF101", "warning", "Missing declared dependency", f"Job '{consumer}' downloads artifact '{artifact.name}' from producer(s) {sorted(producer_set)} but needs={sorted(declared)}.", consumer, "Declare the producer job in needs when the consumer depends on its artifact.", "Static matching uses literal artifact names and direct needs only."))
-
+                    findings.append(
+                        Finding(
+                            rule_id="WF101",
+                            severity="warning",
+                            title="Missing declared dependency",
+                            evidence=(
+                                f"Job '{consumer}' downloads artifact "
+                                f"'{artifact.name}' from producer(s) "
+                                f"{sorted(producer_set)} but "
+                                f"needs={sorted(declared)}."
+                            ),
+                            job_id=consumer,
+                            remediation=(
+                                "Declare the producer job in needs when the "
+                                "consumer depends on its artifact."
+                            ),
+                        )
+                    )
     model.findings = findings
     return findings
