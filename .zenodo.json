@@ -1,0 +1,43 @@
+{
+  "title": "Actions Workflow Map: Repository-Wide GitHub Actions Visualization and Analysis",
+  "version": "0.2.0",
+  "upload_type": "software",
+  "publication_date": "2026-07-28",
+  "description": "Actions Workflow Map is an open-source, local-first developer tool that converts GitHub Actions workflow configurations into visual and machine-readable operational maps. Version 0.2.0 supports both individual workflow analysis and repository-wide discovery. It maps triggers, jobs, needs dependencies, matrices, local reusable workflows, permissions, concurrency groups, environments, external action references, and artifact producer-consumer relationships. The tool generates Mermaid diagrams, self-contained HTML reports, JSON reports, console summaries, and deterministic evidence-linked findings.",
+  "creators": [
+    {
+      "name": "Srivastava, Tanya",
+      "affiliation": "Independent Developer",
+      "type": "ProjectMember"
+    }
+  ],
+  "access_right": "open",
+  "license": "mit",
+  "language": "eng",
+  "keywords": [
+    "GitHub Actions",
+    "CI/CD",
+    "workflow visualization",
+    "workflow analysis",
+    "DevOps",
+    "developer tools",
+    "software validation",
+    "artifact traceability",
+    "reusable workflows",
+    "workflow observability",
+    "Python",
+    "Mermaid"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/Tanya-Sriv/actions-workflow-map/releases/tag/v0.2.0",
+      "relation": "isIdenticalTo",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://github.com/Tanya-Sriv/actions-workflow-map",
+      "relation": "isSupplementedBy",
+      "resource_type": "software"
+    }
+  ]
+}
