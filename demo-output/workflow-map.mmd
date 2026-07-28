@@ -1,0 +1,15 @@
+flowchart TD
+  trigger_pull_request(["trigger: pull_request"])
+  trigger_pull_request --> build
+  trigger_workflow_dispatch(["trigger: workflow_dispatch"])
+  trigger_workflow_dispatch --> build
+  build["Build<br/>runner: ${{ matrix.os }}<br/>matrix: os=['ubuntu-latest', 'windows-latest'], python=['3.11', '3.12']"]
+  test["test<br/>runner: ubuntu-latest"]
+  deploy["deploy<br/>runner: ubuntu-latest<br/>if: github.ref == 'refs/heads/main'"]
+  build -->|needs| test
+  test -->|needs| deploy
+  environment_staging(["environment: staging"])
+  deploy -->|deploys-to| environment_staging
+  artifact_package{{"artifact: package"}}
+  build -->|produces| artifact_package
+  artifact_package -->|consumes| test

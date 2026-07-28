@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+title: Actions Workflow Map
+message: If you use this software, please cite the repository release.
+type: software
+version: 0.1.0
+authors:
+  - family-names: Srivastava
+    given-names: Tanya
