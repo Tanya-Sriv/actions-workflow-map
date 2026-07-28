@@ -1,8 +1,45 @@
 cff-version: 1.2.0
-title: Actions Workflow Map
-message: If you use this software, please cite the repository release.
+message: "If you use Actions Workflow Map, please cite it using the metadata below."
+
+title: "Actions Workflow Map: Repository-Wide GitHub Actions Visualization and Analysis"
 type: software
-version: 0.1.0
+version: "0.2.1"
+date-released: "2026-07-28"
+doi: "10.5281/zenodo.21641546"
+
 authors:
-  - family-names: Srivastava
-    given-names: Tanya
+  - family-names: "Srivastava"
+    given-names: "Tanya"
+    affiliation: "Independent Developer"
+
+abstract: >-
+  Actions Workflow Map is an independently developed, open-source,
+  local-first developer tool that converts GitHub Actions workflow
+  configurations into visual and machine-readable operational maps.
+  It supports individual workflow analysis and repository-wide discovery,
+  including workflow triggers, jobs, needs dependencies, strategy matrices,
+  local reusable workflows, permissions, concurrency groups, environments,
+  external action references, and artifact producer-consumer relationships.
+  The software generates Mermaid diagrams, self-contained HTML reports,
+  JSON reports, console summaries, and deterministic evidence-linked
+  findings to improve workflow comprehension, reviewability, observability,
+  traceability, validation reliability, and developer productivity.
+
+repository-code: "https://github.com/Tanya-Sriv/actions-workflow-map"
+url: "https://github.com/Tanya-Sriv/actions-workflow-map/releases/tag/v0.2.1"
+
+license: MIT
+
+keywords:
+  - "GitHub Actions"
+  - "CI/CD"
+  - "workflow visualization"
+  - "workflow analysis"
+  - "DevOps"
+  - "developer tools"
+  - "software validation"
+  - "artifact traceability"
+  - "reusable workflows"
+  - "workflow observability"
+  - "Python"
+  - "Mermaid"

@@ -1,0 +1,41 @@
+{
+  "artifacts": [],
+  "concurrency": null,
+  "concurrency_details": null,
+  "findings": [],
+  "jobs": {
+    "build": {
+      "concurrency": null,
+      "concurrency_details": null,
+      "condition": null,
+      "effective_permissions": null,
+      "environment": null,
+      "id": "build",
+      "matrix": {},
+      "matrix_details": null,
+      "name": null,
+      "needs": [],
+      "permission_source": "unspecified",
+      "permissions": null,
+      "runs_on": "ubuntu-latest",
+      "steps": [
+        {
+          "condition": null,
+          "name": null,
+          "run": "echo reusable",
+          "uses": null,
+          "with_inputs": {}
+        }
+      ],
+      "timeout_minutes": 15,
+      "uses": null
+    }
+  },
+  "name": "Reusable Build",
+  "permissions": null,
+  "source_path": "C:\\Users\\tanya\\Downloads\\Project NIW\\Actions-workflow-maps\\actions-workflow-map\\examples\\repository-demo\\.github\\workflows\\reusable-build.yml",
+  "triggers": {
+    "workflow_call": null
+  },
+  "unsupported": []
+}

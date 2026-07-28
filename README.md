@@ -1,4 +1,5 @@
 # Actions Workflow Map
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21641546.svg)](https://doi.org/10.5281/zenodo.21641546)
 
 Turn complex GitHub Actions YAML into a clear visual and machine-readable operational map.
 

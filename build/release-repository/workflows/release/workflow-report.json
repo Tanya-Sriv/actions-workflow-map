@@ -1,0 +1,85 @@
+{
+  "artifacts": [],
+  "concurrency": {
+    "cancel-in-progress": false,
+    "group": "deployment"
+  },
+  "concurrency_details": {
+    "cancel_in_progress": false,
+    "group": "deployment",
+    "owner": "release.yml",
+    "scope": "workflow"
+  },
+  "findings": [
+    {
+      "affected_node": "call-build",
+      "evidence": "jobs.call-build has no timeout-minutes",
+      "limitation": null,
+      "remediation": "Set timeout-minutes to bound stuck or unexpectedly long jobs.",
+      "rule_id": "WF401",
+      "severity": "warning",
+      "title": "No timeout configured"
+    }
+  ],
+  "jobs": {
+    "call-build": {
+      "concurrency": null,
+      "concurrency_details": null,
+      "condition": null,
+      "effective_permissions": {
+        "contents": "write"
+      },
+      "environment": null,
+      "id": "call-build",
+      "matrix": {},
+      "matrix_details": null,
+      "name": null,
+      "needs": [],
+      "permission_source": "job",
+      "permissions": {
+        "contents": "write"
+      },
+      "runs_on": null,
+      "steps": [],
+      "timeout_minutes": null,
+      "uses": "./.github/workflows/reusable-build.yml"
+    },
+    "publish": {
+      "concurrency": null,
+      "concurrency_details": null,
+      "condition": null,
+      "effective_permissions": {
+        "contents": "read"
+      },
+      "environment": null,
+      "id": "publish",
+      "matrix": {},
+      "matrix_details": null,
+      "name": null,
+      "needs": [],
+      "permission_source": "workflow",
+      "permissions": null,
+      "runs_on": "ubuntu-latest",
+      "steps": [
+        {
+          "condition": null,
+          "name": null,
+          "run": "echo publish",
+          "uses": null,
+          "with_inputs": {}
+        }
+      ],
+      "timeout_minutes": 15,
+      "uses": null
+    }
+  },
+  "name": "Release",
+  "permissions": {
+    "contents": "read"
+  },
+  "source_path": "C:\\Users\\tanya\\Downloads\\Project NIW\\Actions-workflow-maps\\actions-workflow-map\\examples\\repository-demo\\.github\\workflows\\release.yml",
+  "triggers": {
+    "workflow_dispatch": null
+  },
+  "unsupported": []
+}
