@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from pathlib import Path
-
 from .artifact_flow import extract_artifacts
 from .discovery import discover_workflow_files
 from .models import Finding, RepositoryModel
