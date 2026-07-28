@@ -20,7 +20,7 @@ def _permission_findings(scope: str, permissions: Any) -> list[Finding]:
 
 
 def _mutable_ref(ref: str) -> bool:
-    if ref.startswith("./") or ref.startswith("docker://"):
+    if ref.startswith(("./", "docker://")):
         return False
     if "@" not in ref:
         return True
