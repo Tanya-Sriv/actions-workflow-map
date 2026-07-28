@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from pathlib import Path
 
 from .concurrency import is_static_group
 from .models import Finding, RepositoryModel
