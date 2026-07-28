@@ -1,19 +1,25 @@
+from __future__ import annotations
+
 from pathlib import Path
 
-from actions_workflow_map.discovery import discover_workflow_files
-from actions_workflow_map.models import Finding, RepositoryModel
-from actions_workflow_map.parser import parse_workflow
+from .artifact_flow import extract_artifacts
+from .discovery import discover_workflow_files
+from .models import Finding, RepositoryModel
+from .parser import parse_workflow
+from .repository_rules import run_repository_rules
+from .reusable_workflows import resolve_reusable_workflows
+from .rules import run_rules
 
 
 def parse_repository(repository_root: Path) -> RepositoryModel:
     root = repository_root.resolve()
-    workflow_paths = discover_workflow_files(root)
-
     repository = RepositoryModel(root=root)
 
-    for workflow_path in workflow_paths:
+    for workflow_path in discover_workflow_files(root):
         try:
             workflow = parse_workflow(workflow_path)
+            extract_artifacts(workflow)
+            run_rules(workflow)
         except Exception as exc:
             repository.findings.append(
                 Finding(
@@ -21,15 +27,13 @@ def parse_repository(repository_root: Path) -> RepositoryModel:
                     severity="error",
                     title="Workflow could not be parsed",
                     evidence=f"{workflow_path.name}: {exc}",
-                    remediation=(
-                        "Correct the workflow YAML or remove an "
-                        "unsupported construct."
-                    ),
-                    job_id=None,
+                    affected_node=workflow_path.name,
+                    remediation="Correct the malformed or unsupported workflow YAML.",
                 )
             )
             continue
-
         repository.workflows.append(workflow)
 
+    resolve_reusable_workflows(repository)
+    run_repository_rules(repository)
     return repository

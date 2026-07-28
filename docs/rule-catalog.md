@@ -8,8 +8,3 @@
 - **WF501** External action reference is not pinned to a 40-character commit SHA.
 
 These are review signals, not proof of runtime failure or a complete security audit.
-
-### WF101 — Missing declared dependency
-
-**Limitation:** Static matching uses literal artifact names and direct
-`needs` relationships only.

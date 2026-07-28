@@ -41,12 +41,6 @@ ruff check .
 pytest -q
 ```
 
-## Example
-
-```bash
-actions-workflow-map examples/matrix-artifact.yml \
-  --output build/matrix-artifact
-
 ## Phase 1 limitations
 
 Literal values are mapped conservatively. Dynamic expressions, cross-workflow execution, reusable-workflow internals, implicit artifact transfer, outputs, and complete condition evaluation are not resolved. See [docs/limitations.md](docs/limitations.md).
