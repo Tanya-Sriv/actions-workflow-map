@@ -1,0 +1,387 @@
+{
+  "findings": [
+    {
+      "affected_node": "concurrency:deployment",
+      "evidence": "Concurrency group 'deployment' is declared by: .github/workflows/deploy.yml, .github/workflows/release.yml",
+      "limitation": "Only exact static group strings are compared.",
+      "remediation": "Confirm that cross-workflow serialization is intentional.",
+      "rule_id": "WF701",
+      "severity": "warning",
+      "title": "Concurrency group shared across workflows"
+    },
+    {
+      "affected_node": "concurrency:deployment",
+      "evidence": "Concurrency group 'deployment' is declared by: .github/workflows/deploy.yml, .github/workflows/release.yml",
+      "limitation": "This is a declared-configuration risk, not proof that cancellation occurs.",
+      "remediation": "Review whether one workflow may cancel another unexpectedly.",
+      "rule_id": "WF702",
+      "severity": "warning",
+      "title": "Shared concurrency group enables cancellation"
+    },
+    {
+      "affected_node": ".github/workflows/release.yml::jobs.call-build",
+      "evidence": ".github/workflows/release.yml::jobs.call-build changes contents from read to write.",
+      "limitation": null,
+      "remediation": "Confirm the broader job-level permission is required.",
+      "rule_id": "WF901",
+      "severity": "warning",
+      "title": "Job permissions broaden workflow permissions"
+    }
+  ],
+  "repository": {
+    "root": "."
+  },
+  "reusable_workflow_references": [
+    {
+      "caller_job": "call-build",
+      "caller_workflow_path": ".github/workflows/release.yml",
+      "escapes_repository": false,
+      "is_local": true,
+      "is_resolved": true,
+      "reference": "./.github/workflows/reusable-build.yml",
+      "resolved_path": ".github/workflows/reusable-build.yml",
+      "target_workflow_path": ".github/workflows/reusable-build.yml"
+    }
+  ],
+  "schema_version": "0.2",
+  "summary": {
+    "artifact_count": 1,
+    "concurrency_group_count": 1,
+    "dependency_count": 1,
+    "environment_count": 1,
+    "estimated_matrix_executions": 4,
+    "finding_count": 3,
+    "job_count": 6,
+    "matrix_job_count": 1,
+    "parse_failure_count": 0,
+    "resolved_reusable_workflow_count": 1,
+    "reusable_workflow_count": 1,
+    "workflow_count": 4
+  },
+  "workflows": [
+    {
+      "artifacts": [
+        {
+          "consumers": [
+            "test"
+          ],
+          "name": "package",
+          "producers": [
+            "build"
+          ],
+          "unresolved": false
+        }
+      ],
+      "concurrency": null,
+      "concurrency_details": null,
+      "findings": [
+        {
+          "affected_node": "build",
+          "evidence": "jobs.build uses actions/checkout@v4",
+          "limitation": "Local reusable workflows and docker:// references are excluded.",
+          "remediation": "Pin third-party actions to an immutable commit SHA.",
+          "rule_id": "WF501",
+          "severity": "warning",
+          "title": "Mutable external action reference"
+        },
+        {
+          "affected_node": "build",
+          "evidence": "jobs.build uses actions/upload-artifact@v4",
+          "limitation": "Local reusable workflows and docker:// references are excluded.",
+          "remediation": "Pin third-party actions to an immutable commit SHA.",
+          "rule_id": "WF501",
+          "severity": "warning",
+          "title": "Mutable external action reference"
+        },
+        {
+          "affected_node": "test",
+          "evidence": "jobs.test uses actions/download-artifact@v4",
+          "limitation": "Local reusable workflows and docker:// references are excluded.",
+          "remediation": "Pin third-party actions to an immutable commit SHA.",
+          "rule_id": "WF501",
+          "severity": "warning",
+          "title": "Mutable external action reference"
+        }
+      ],
+      "jobs": {
+        "build": {
+          "concurrency": null,
+          "concurrency_details": null,
+          "condition": null,
+          "effective_permissions": {
+            "contents": "read"
+          },
+          "environment": null,
+          "id": "build",
+          "matrix": {
+            "os": [
+              "ubuntu-latest",
+              "windows-latest"
+            ],
+            "python": [
+              "3.11",
+              "3.12"
+            ]
+          },
+          "matrix_details": {
+            "dimensions": {
+              "os": [
+                "ubuntu-latest",
+                "windows-latest"
+              ],
+              "python": [
+                "3.11",
+                "3.12"
+              ]
+            },
+            "estimated_expansion": 4,
+            "excludes": [],
+            "has_unresolved_expressions": false,
+            "includes": []
+          },
+          "name": null,
+          "needs": [],
+          "permission_source": "workflow",
+          "permissions": null,
+          "runs_on": "ubuntu-latest",
+          "steps": [
+            {
+              "condition": null,
+              "name": null,
+              "run": null,
+              "uses": "actions/checkout@v4",
+              "with_inputs": {}
+            },
+            {
+              "condition": null,
+              "name": null,
+              "run": null,
+              "uses": "actions/upload-artifact@v4",
+              "with_inputs": {
+                "name": "package"
+              }
+            }
+          ],
+          "timeout_minutes": 15,
+          "uses": null
+        },
+        "test": {
+          "concurrency": null,
+          "concurrency_details": null,
+          "condition": null,
+          "effective_permissions": {
+            "contents": "read"
+          },
+          "environment": null,
+          "id": "test",
+          "matrix": {},
+          "matrix_details": null,
+          "name": null,
+          "needs": [
+            "build"
+          ],
+          "permission_source": "workflow",
+          "permissions": null,
+          "runs_on": "ubuntu-latest",
+          "steps": [
+            {
+              "condition": null,
+              "name": null,
+              "run": null,
+              "uses": "actions/download-artifact@v4",
+              "with_inputs": {
+                "name": "package"
+              }
+            }
+          ],
+          "timeout_minutes": 10,
+          "uses": null
+        }
+      },
+      "name": "CI",
+      "permissions": {
+        "contents": "read"
+      },
+      "source_path": ".github/workflows/ci.yml",
+      "triggers": {
+        "pull_request": null
+      },
+      "unsupported": []
+    },
+    {
+      "artifacts": [],
+      "concurrency": {
+        "cancel-in-progress": true,
+        "group": "deployment"
+      },
+      "concurrency_details": {
+        "cancel_in_progress": true,
+        "group": "deployment",
+        "owner": "deploy.yml",
+        "scope": "workflow"
+      },
+      "findings": [],
+      "jobs": {
+        "deploy": {
+          "concurrency": null,
+          "concurrency_details": null,
+          "condition": null,
+          "effective_permissions": null,
+          "environment": "staging",
+          "id": "deploy",
+          "matrix": {},
+          "matrix_details": null,
+          "name": null,
+          "needs": [],
+          "permission_source": "unspecified",
+          "permissions": null,
+          "runs_on": "ubuntu-latest",
+          "steps": [
+            {
+              "condition": null,
+              "name": null,
+              "run": "echo deploy",
+              "uses": null,
+              "with_inputs": {}
+            }
+          ],
+          "timeout_minutes": 15,
+          "uses": null
+        }
+      },
+      "name": "Deploy",
+      "permissions": null,
+      "source_path": ".github/workflows/deploy.yml",
+      "triggers": {
+        "workflow_dispatch": null
+      },
+      "unsupported": []
+    },
+    {
+      "artifacts": [],
+      "concurrency": {
+        "cancel-in-progress": false,
+        "group": "deployment"
+      },
+      "concurrency_details": {
+        "cancel_in_progress": false,
+        "group": "deployment",
+        "owner": "release.yml",
+        "scope": "workflow"
+      },
+      "findings": [
+        {
+          "affected_node": "call-build",
+          "evidence": "jobs.call-build has no timeout-minutes",
+          "limitation": null,
+          "remediation": "Set timeout-minutes to bound stuck or unexpectedly long jobs.",
+          "rule_id": "WF401",
+          "severity": "warning",
+          "title": "No timeout configured"
+        }
+      ],
+      "jobs": {
+        "call-build": {
+          "concurrency": null,
+          "concurrency_details": null,
+          "condition": null,
+          "effective_permissions": {
+            "contents": "write"
+          },
+          "environment": null,
+          "id": "call-build",
+          "matrix": {},
+          "matrix_details": null,
+          "name": null,
+          "needs": [],
+          "permission_source": "job",
+          "permissions": {
+            "contents": "write"
+          },
+          "runs_on": null,
+          "steps": [],
+          "timeout_minutes": null,
+          "uses": "./.github/workflows/reusable-build.yml"
+        },
+        "publish": {
+          "concurrency": null,
+          "concurrency_details": null,
+          "condition": null,
+          "effective_permissions": {
+            "contents": "read"
+          },
+          "environment": null,
+          "id": "publish",
+          "matrix": {},
+          "matrix_details": null,
+          "name": null,
+          "needs": [],
+          "permission_source": "workflow",
+          "permissions": null,
+          "runs_on": "ubuntu-latest",
+          "steps": [
+            {
+              "condition": null,
+              "name": null,
+              "run": "echo publish",
+              "uses": null,
+              "with_inputs": {}
+            }
+          ],
+          "timeout_minutes": 15,
+          "uses": null
+        }
+      },
+      "name": "Release",
+      "permissions": {
+        "contents": "read"
+      },
+      "source_path": ".github/workflows/release.yml",
+      "triggers": {
+        "workflow_dispatch": null
+      },
+      "unsupported": []
+    },
+    {
+      "artifacts": [],
+      "concurrency": null,
+      "concurrency_details": null,
+      "findings": [],
+      "jobs": {
+        "build": {
+          "concurrency": null,
+          "concurrency_details": null,
+          "condition": null,
+          "effective_permissions": null,
+          "environment": null,
+          "id": "build",
+          "matrix": {},
+          "matrix_details": null,
+          "name": null,
+          "needs": [],
+          "permission_source": "unspecified",
+          "permissions": null,
+          "runs_on": "ubuntu-latest",
+          "steps": [
+            {
+              "condition": null,
+              "name": null,
+              "run": "echo reusable",
+              "uses": null,
+              "with_inputs": {}
+            }
+          ],
+          "timeout_minutes": 15,
+          "uses": null
+        }
+      },
+      "name": "Reusable Build",
+      "permissions": null,
+      "source_path": ".github/workflows/reusable-build.yml",
+      "triggers": {
+        "workflow_call": null
+      },
+      "unsupported": []
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Deploy</title>
+<style>body{font-family:system-ui,sans-serif;max-width:1200px;margin:auto;padding:2rem;color:#1f2937}code,pre{background:#f3f4f6}.card{border:1px solid #d1d5db;border-radius:10px;padding:1rem;margin:1rem 0}.warning{border-left:5px solid #b45309}.info{border-left:5px solid #2563eb}.muted{color:#6b7280}.mermaid{overflow:auto}</style>
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'; mermaid.initialize({startOnLoad:true,securityLevel:'strict'});</script>
+</head><body>
+<h1>Deploy</h1><p class="muted">Declared configuration map for C:\Users\tanya\Downloads\Project NIW\Actions-workflow-maps\actions-workflow-map\examples\repository-demo\.github\workflows\deploy.yml</p>
+<div class="card"><div class="mermaid">flowchart TD
+  trigger_workflow_dispatch([&quot;trigger: workflow_dispatch&quot;])
+  trigger_workflow_dispatch --&gt; deploy
+  deploy[&quot;deploy&lt;br/&gt;runner: ubuntu-latest&quot;]
+  environment_staging([&quot;environment: staging&quot;])
+  deploy --&gt;|deploys-to| environment_staging
+</div></div>
+<h2>Summary</h2><div class="card"><p><strong>Jobs:</strong> 1</p><p><strong>Artifacts:</strong> 0</p><p><strong>Findings:</strong> 0</p></div>
+<h2>Findings</h2>
+<p>No Phase 1 findings.</p>
+<h2>Boundary</h2><p>This report maps declared YAML configuration. It does not simulate all runtime behavior or replace GitHub validation, actionlint, or security scanners.</p>
+</body></html>

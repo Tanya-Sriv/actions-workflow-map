@@ -1,0 +1,49 @@
+{
+  "artifacts": [],
+  "concurrency": {
+    "cancel-in-progress": true,
+    "group": "deployment"
+  },
+  "concurrency_details": {
+    "cancel_in_progress": true,
+    "group": "deployment",
+    "owner": "deploy.yml",
+    "scope": "workflow"
+  },
+  "findings": [],
+  "jobs": {
+    "deploy": {
+      "concurrency": null,
+      "concurrency_details": null,
+      "condition": null,
+      "effective_permissions": null,
+      "environment": "staging",
+      "id": "deploy",
+      "matrix": {},
+      "matrix_details": null,
+      "name": null,
+      "needs": [],
+      "permission_source": "unspecified",
+      "permissions": null,
+      "runs_on": "ubuntu-latest",
+      "steps": [
+        {
+          "condition": null,
+          "name": null,
+          "run": "echo deploy",
+          "uses": null,
+          "with_inputs": {}
+        }
+      ],
+      "timeout_minutes": 15,
+      "uses": null
+    }
+  },
+  "name": "Deploy",
+  "permissions": null,
+  "source_path": "C:\\Users\\tanya\\Downloads\\Project NIW\\Actions-workflow-maps\\actions-workflow-map\\examples\\repository-demo\\.github\\workflows\\deploy.yml",
+  "triggers": {
+    "workflow_dispatch": null
+  },
+  "unsupported": []
+}

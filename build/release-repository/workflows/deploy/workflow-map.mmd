@@ -1,0 +1,6 @@
+flowchart TD
+  trigger_workflow_dispatch(["trigger: workflow_dispatch"])
+  trigger_workflow_dispatch --> deploy
+  deploy["deploy<br/>runner: ubuntu-latest"]
+  environment_staging(["environment: staging"])
+  deploy -->|deploys-to| environment_staging

@@ -1,0 +1,6 @@
+flowchart TD
+  trigger_workflow_dispatch(["trigger: workflow_dispatch"])
+  trigger_workflow_dispatch --> call_build
+  trigger_workflow_dispatch --> publish
+  call_build["call-build"]
+  publish["publish<br/>runner: ubuntu-latest"]
