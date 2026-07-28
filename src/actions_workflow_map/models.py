@@ -38,16 +38,14 @@ class ArtifactModel:
     unresolved: bool = False
 
 
-@dataclass(slots=True)
+@dataclass
 class Finding:
     rule_id: str
     severity: str
     title: str
     evidence: str
-    affected_node: str | None = None
-    remediation: str | None = None
-    limitation: str | None = None
-
+    remediation: str
+    job_id: str | None = None
 
 @dataclass(slots=True)
 class WorkflowModel:
