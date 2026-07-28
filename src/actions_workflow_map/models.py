@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
 from typing import Any
+from pathlib import Path
 
 
 @dataclass(slots=True)
@@ -62,3 +63,38 @@ class WorkflowModel:
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
+        
+@dataclass
+class WorkflowReference:
+    caller_workflow: str
+    caller_job: str
+    reference: str
+    resolved_path: Path | None
+    target_workflow: str | None
+    is_local: bool
+    is_resolved: bool
+
+
+@dataclass
+class RepositorySummary:
+    workflow_count: int = 0
+    job_count: int = 0
+    dependency_count: int = 0
+    matrix_job_count: int = 0
+    estimated_matrix_executions: int = 0
+    artifact_count: int = 0
+    reusable_workflow_count: int = 0
+    environment_count: int = 0
+    concurrency_group_count: int = 0
+    finding_count: int = 0
+
+
+@dataclass
+class RepositoryModel:
+    root: Path
+    workflows: list["WorkflowModel"] = field(default_factory=list)
+    reusable_workflow_references: list[WorkflowReference] = field(
+        default_factory=list
+    )
+    findings: list["Finding"] = field(default_factory=list)
+    summary: RepositorySummary = field(default_factory=RepositorySummary)
